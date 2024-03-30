@@ -44,6 +44,43 @@ img {
   max-width: 100%;
   height: auto;
 }
+.modal-content {
+  /* Your existing styles for the modal content */
+  position: relative; /* Ensure positioning context for absolute positioning */
+}
+
+.merge-link {
+  top: 100px; 
+  left: 50%; /* Position the button horizontally at 50% of the parent's width */
+  transform: translateX(-50%);
+  position:absolute;
+  background:#fff;
+  color:#fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  padding: 10px 30px;
+  transition: 0.5s;
+}
+.merge-link:hover{
+  letter-spacing: 0.25em;
+  background: var(--clr);
+  box-shadow: 0 0 35px var(--clr);
+}
+
+.merge-link:before{
+  content: '';
+  position:absolute;
+  inset: 2px;
+  background: #27272c;
+
+}
+.merge-link span{
+  position: relative;
+  z-index: 1;
+}
 
 /*=============== CARD ===============*/
 .container {
@@ -64,12 +101,12 @@ img {
 }
 
 .card__img {
-  width: 328px;
+  width: 200px;
   border-radius: 1.5rem;
 }
 
 .card__data {
-  width: 280px;
+  width: 200px;
   background-color: var(--container-color);
   padding: 1.5rem 2rem;
   box-shadow: 0 8px 24px hsla(0, 0%, 0%, .15);
@@ -125,6 +162,135 @@ img {
 .card__article:not(:hover) .card__data {
   animation: remove-data 1s forwards;
 }
+
+.wrapper{
+  position: fixed; /* Change to fixed position */
+  top: 50%; /* Position it 50% from the top of the viewport */
+  left: 50%; /* Position it 50% from the left of the viewport */
+  transform: translate(-50%, -50%);
+  /* position:relative; */
+  width:400px;
+  height:440px;
+  background: transparent; 
+  border: 2px solid rgba(255,255,255,.5);
+  border-radius: 20px;
+  backdrop-filter: blur(70px);
+  box-shadow: 0 0 30px rgba(0,0,0,.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform .5s ease, height .2s ease;
+}
+
+.wrapper.active-popup {
+  transform: scale(1);
+
+}
+
+.wrapper .form-box {
+  width:100%;
+  padding: 40px;
+}
+
+.input-box{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #162938;
+  margin: 30px 0;
+
+}
+.input-box label{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #fefefe;
+  font-weight: 500;
+  pointer-events: none;
+  transition: .5s;
+}
+
+
+
+
+.input-box input:focus~label,
+.input-box input:valid~label  {
+  top: -5px;
+}
+
+.input-box input{
+  width:100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #f3f3f3;
+  font-weight: 600;
+  padding: 0 35px 0 5px;
+
+}
+
+/* .merge-link-btn {
+  width: 100%;
+  height: 45px;
+  background: #162938;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  color:#fff;
+  font-weight: 500;
+}
+*/
+.merge-link-btn {
+  bottom: 100px; 
+  left: 50%; /* Position the button horizontally at 50% of the parent's width */
+  transform: translateX(-50%);
+  position:absolute;
+  background:#fff;
+  color:#fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  padding: 10px 30px;
+  transition: 0.5s;
+}
+.merge-link-btn:hover{
+  letter-spacing: 0.25em;
+  background: var(--clr);
+  box-shadow: 0 0 35px var(--clr);
+}
+
+.merge-link-btn:before{
+  content: '';
+  position:absolute;
+  inset: 2px;
+  background: #27272c;
+
+}
+.merge-link-btn span{
+  position: relative;
+  z-index: 1;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5em;
+  color: #fefefe;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
 
 /* Card animation */
 @keyframes show-data {
