@@ -42,7 +42,7 @@ body {
 img {
   display: block;
   max-width: 100%;
-  height: auto;
+  height: auto; 
 }
 .modal-content {
   /* Your existing styles for the modal content */
@@ -50,10 +50,10 @@ img {
 }
 
 .merge-link {
-  top: 100px; 
+  top: 0; 
   left: 50%; /* Position the button horizontally at 50% of the parent's width */
   transform: translateX(-50%);
-  position:absolute;
+  position:fixed;
   background:#fff;
   color:#fff;
   text-decoration: none;
@@ -92,6 +92,8 @@ img {
 
 .card__container {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   row-gap: 3.5rem;
 }
 
@@ -101,7 +103,8 @@ img {
 }
 
 .card__img {
-  width: 200px;
+
+  width: 280px;
   border-radius: 1.5rem;
 }
 

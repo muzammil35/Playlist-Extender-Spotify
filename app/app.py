@@ -1,4 +1,4 @@
-from flask import Flask,redirect,request,render_template,jsonify,session
+from flask import Flask,redirect,request,render_template,jsonify,session,url_for
 import os
 from dotenv import load_dotenv
 import spotipy
@@ -6,7 +6,10 @@ from spotipy.oauth2 import SpotifyOAuth
 import requests
 import json
 
-scope = "playlist-modify-private"
+from utils.get_encoded_image import image_url_to_base64
+from utils.is_valid_url import is_valid_image_url
+
+scope = "playlist-modify-public ugc-image-upload"
 
 load_dotenv()
 
@@ -36,7 +39,7 @@ def callback():
     send playlists to frontend
     '''
 
-    scope = "playlist-modify-private"
+    scope = "playlist-modify-public ugc-image-upload"
     client_id = os.environ['CLIENT_ID']
     client_secret = os.environ['CLIENT_SECRET']
     redirect_uri = os.environ['REDIRECT_URI']
@@ -49,9 +52,14 @@ def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
 
+    refresh_token = token_info['refresh_token']
+
+    session['token_info'] = token_info
+    session['refresh_token'] = token_info['refresh_token']
+
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
-    playlists = sp.current_user_playlists(limit=10)
+    playlists = sp.current_user_playlists()
 
     return render_template('home.html', playlists=playlists['items'])
  
@@ -62,9 +70,18 @@ def create_playlist():
     create merged playlist
     '''
 
-    scope = "playlist-modify-private"
+    scope = "playlist-modify-public ugc-image-upload"
     #sp = spotipy.Spotify(auth=access_token)
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+    token_info = session.get('token_info')
+
+    if(token_info):
+        if sp_oauth.is_token_expired(token_info):
+            refresh_token = session.get('refresh_token')
+            token_info = sp_oauth.refresh_access_token(refresh_token)
+
+
     current_user_info = sp.current_user()
     current_user_id = current_user_info['id']
 
@@ -73,7 +90,7 @@ def create_playlist():
     image = data['image']
     highlighted_playlists = data['playlists']
 
-    sp.user_playlist_create( user=current_user_id, name=name, public=True, collaborative=False, description='merged playlist')
+    sp.user_playlist_create( user=current_user_id, name=name, public=True, collaborative=False, description="merged playlist")
 
     # Add tracks from existing playlists to the new playlist
     user_playlists = sp.current_user_playlists()['items']
@@ -101,6 +118,14 @@ def create_playlist():
             tracks = sp.playlist_tracks(str(playlist_id))    
             track_uris = [track['track']['uri'] for track in tracks['items']]
             sp.playlist_add_items(str(new_playlist_id), track_uris)
+    
+    image_url = image
+
+
+    if(is_valid_image_url(image_url)):
+        encoded_img = image_url_to_base64(image_url)
+        sp.playlist_upload_cover_image(str(new_playlist_id), encoded_img)
+
 
 
     return jsonify({'success': True}), 200

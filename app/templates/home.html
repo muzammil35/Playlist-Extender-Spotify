@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="icon" type="image/png" href="../static/spotify.png">
     <style>
         .highlight {
-            border: 2px solid rgb(0, 0, 0); /* Change the border style as needed */
+            border: 2px solid rgb(127, 14, 219); /* Change the border style as needed */
         }
     </style>
     <title>Playlist Extender</title>
@@ -39,7 +40,7 @@
     {% if playlists|length > 1 %}
         <div id="myModal" class="modal">
             <div class="modal-content">
-                <a href="#" style="--clr:#1e9bff" class="merge-link"><span>Merge</span></a>
+                <a href="#" style="--clr:#1e9bff" class="merge-link"><span>Merge Playlists</span></a>
             </div>
         </div>
 
@@ -49,15 +50,15 @@
                 <form action="#">
                     <div class="input-box">
                         <span class="icon"></span>
-                        <input type="text" required>
-                        <label>New playlist Image url</label>
+                        <input id="newPlaylistImage" type="text" required>
+                        <label>New playlist Image URL</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"></span>
-                        <input type="text" required>
+                        <input id="newPlaylistName" type="text" required>
                         <label>New playlist name</label>
                     </div>
-                    <a href="#" style="--clr:#1e9bff" onclick="createPlaylist()" class="merge-link-btn"><span>Create</span></a>
+                    <button  style="--clr:#1e9bff" onclick="createPlaylist()" class="merge-link-btn"><span>Create</span></buton>
                 </form>
             </div>
         </div>
@@ -86,6 +87,9 @@
             }
 
             function createPlaylist() {
+
+                const wrapper = document.querySelector('.wrapper');
+                closeWrapper();
                 var name = document.getElementById('newPlaylistName').value;
                 var image = document.getElementById('newPlaylistImage').value;
                 var playlists = [];  // Replace this with the list of selected playlists
