@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <style>
+        .highlight {
+            border: 2px solid rgb(0, 0, 0); /* Change the border style as needed */
+        }
+    </style>
+    <title>Playlist Extender</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card__container">
+            {% for playlist in playlists %}
+            <article class="card__article" onclick="highlight(this)">
+                {% if playlist.images and playlist.images|length > 0 %}
+                    <img src="{{ playlist.images[0].url }}" alt="{{ playlist.name }}" class="card__img">
+                {% else %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/839px-Spotify_logo_with_text.svg.png?20160123211747" alt="{{ playlist.name }}" class="card__img">
+                {% endif %}
+                <div class="card__data">
+                    <span class="card__description">{{ playlist.description }}</span>
+                    <h2 class="card__title">{{ playlist.name }}</h2>
+                    <a href="{{ playlist.external_urls.spotify }}" class="card__button">Open Playlist</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+    <button id="mergeButton">Merge Playlists</button>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <label for="newPlaylistName">New Playlist Name:</label>
+            <input type="text" id="newPlaylistName" name="newPlaylistName"><br>
+            <label for="newPlaylistImage">Playlist Image URL:</label>
+            <input type="text" id="newPlaylistImage" name="newPlaylistImage"><br>
+            <button onclick="createPlaylist()">Create Playlist</button>
+        </div>
+    </div>
+
+    <script>
+        function highlight(element) {
+            var isHighlighted = element.classList.contains('highlight');
+            // Toggle highlight class for the clicked article
+            element.classList.toggle('highlight', !isHighlighted);
+        }
+
+        function createPlaylist() {
+            var name = document.getElementById('newPlaylistName').value;
+            var image = document.getElementById('newPlaylistImage').value;
+            var playlists = [];  // Replace this with the list of selected playlists
+
+            // Get the list of highlighted playlist IDs
+            var highlightedPlaylists = document.querySelectorAll('.highlight .card__title');
+            highlightedPlaylists.forEach(function(playlist) {
+                playlists.push(playlist.innerText);
+            });
+
+            // Send data to Flask backend using Fetch
+            fetch('/create_playlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, image: image, playlists: playlists })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Playlist created successfully
+                alert('Playlist created successfully!');
+                closeModal();
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        }
+
+        // Add event listener to the "Merge Playlists" button
+        document.getElementById("mergeButton").addEventListener("click", function() {
+            openModal();
+        });
+    </script>
+</body>
+</html>
