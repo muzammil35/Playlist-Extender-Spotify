@@ -10,3 +10,4 @@ Flask-Login==0.5.0  # For user authentication
 Flask-SQLAlchemy==3.0.2  # ORM for interacting with databases
 Flask-Migrate==3.1.0  # For handling database migrations
 Flask-Script==2.0.6  # Optional for adding command-line functionality
+gunicorn==20.1.0
