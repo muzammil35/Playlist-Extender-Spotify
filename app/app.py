@@ -6,8 +6,8 @@ from spotipy.oauth2 import SpotifyOAuth
 import requests
 import json
 
-from app.utils.get_encoded_image import image_url_to_base64
-from app.utils.is_valid_url import is_valid_image_url
+from utils.get_encoded_image import image_url_to_base64
+from utils.is_valid_url import is_valid_image_url
 
 scope = "playlist-modify-public ugc-image-upload"
 
