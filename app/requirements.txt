@@ -1,0 +1,12 @@
+# Backend Requirements (Python - Flask)
+Flask==2.2.2
+Werkzeug==2.2.2
+spotipy
+requests
+python-dotenv
+Flask-Cors==3.0.10  # Optional if you need Cross-Origin Resource Sharing (CORS)
+Flask-WTF==0.15.1  # For handling forms in Flask
+Flask-Login==0.5.0  # For user authentication
+Flask-SQLAlchemy==3.0.2  # ORM for interacting with databases
+Flask-Migrate==3.1.0  # For handling database migrations
+Flask-Script==2.0.6  # Optional for adding command-line functionality
