@@ -61,14 +61,6 @@ def callback():
 
     # Extract the access token
     access_token = token_info['access_token']
-
-    # Use the access token to make a request to get the current user's information
-    user_info_url = 'https://api.spotify.com/v1/me'
-    headers = {
-        'Authorization': 'Bearer ' + access_token
-    }
-    user_info_response = requests.get(user_info_url, headers=headers)
-    current_user_info = user_info_response.json()
   
     # Get user's playlists
     playlists_url = f"{SPOTIFY_API_BASE_URL}/me/playlists"
