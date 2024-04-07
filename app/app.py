@@ -46,13 +46,11 @@ def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
 
-    refresh_token = token_info['refresh_token']
-
-    session['token_info'] = token_info
-    session['refresh_token'] = token_info['refresh_token']
-
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
+    user_info = sp.current_user()
+    print(user_info)
+  
     playlists = sp.current_user_playlists()
 
     return render_template('home.html', playlists=playlists['items'])
