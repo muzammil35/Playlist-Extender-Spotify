@@ -14,6 +14,8 @@ scope = "playlist-modify-public ugc-image-upload"
 
 load_dotenv()
 
+SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1'
+SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 client_id = os.environ['CLIENT_ID']
 client_secret = os.environ['CLIENT_SECRET']
 redirect_uri = os.environ['REDIRECT_URI']
