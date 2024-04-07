@@ -29,6 +29,8 @@ def index():
     '''
     redirect user to auth url
     '''
+    for cookie_name in request.cookies:
+        response.set_cookie(cookie_name, expires=0)
     session.clear()
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
