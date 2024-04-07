@@ -48,7 +48,7 @@ def callback():
     token_url = 'https://accounts.spotify.com/api/token'
     payload = {
       'grant_type': 'authorization_code',
-      'code': authorization_code,
+      'code': code,
       'redirect_uri': redirect_uri,
       'client_id': client_id,
       'client_secret': client_secret
