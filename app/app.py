@@ -63,8 +63,17 @@ def callback():
     access_token = token_info['access_token']
 
     print(token_info)
+
+    user_url = f"{SPOTIFY_API_BASE_URL}/me"
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    user_response = requests.get(user_url, headers=headers)
+    user_data = user_response.json()
+
+    user_id = user_data['id'] 
     # Get user's playlists
-    playlists_url = f"{SPOTIFY_API_BASE_URL}/me/playlists"
+    playlists_url = f"{SPOTIFY_API_BASE_URL}/users/{user_id}/playlists"
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
