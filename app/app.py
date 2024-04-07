@@ -44,16 +44,40 @@ def callback():
     send playlists to frontend
     '''
     code = request.args.get('code')
-    token_info = sp_oauth.get_access_token(code)
 
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+    token_url = 'https://accounts.spotify.com/api/token'
+    payload = {
+      'grant_type': 'authorization_code',
+      'code': authorization_code,
+      'redirect_uri': redirect_uri,
+      'client_id': client_id,
+      'client_secret': client_secret
+    }
+    response = requests.post(token_url, data=payload)
+    token_info = response.json()
 
-    user_info = sp.current_user()
-    print(user_info)
+    # Extract the access token
+    access_token = token_info['access_token']
+
+    # Use the access token to make a request to get the current user's information
+    user_info_url = 'https://api.spotify.com/v1/me'
+    headers = {
+        'Authorization': 'Bearer ' + access_token
+    }
+    user_info_response = requests.get(user_info_url, headers=headers)
+    current_user_info = user_info_response.json()
   
-    playlists = sp.current_user_playlists()
+    # Get user's playlists
+    playlists_url = f"{SPOTIFY_API_BASE_URL}/me/playlists"
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    playlists_response = requests.get(playlists_url, headers=headers)
+    playlists_data = playlists_response.json()
+    playlists = playlists_data['items']
 
-    return render_template('home.html', playlists=playlists['items'])
+    # Render home.html template with user's playlists
+    return render_template('home.html', playlists=playlists)
  
 
 @app.route('/create_playlist', methods=['POST'])
