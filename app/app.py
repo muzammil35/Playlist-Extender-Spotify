@@ -61,7 +61,8 @@ def callback():
 
     # Extract the access token
     access_token = token_info['access_token']
-  
+
+    print(token_info)
     # Get user's playlists
     playlists_url = f"{SPOTIFY_API_BASE_URL}/me/playlists"
     headers = {
