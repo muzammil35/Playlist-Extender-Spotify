@@ -8,6 +8,7 @@ import json
 
 from utils.get_encoded_image import image_url_to_base64
 from utils.is_valid_url import is_valid_image_url
+from flask import Flask, make_response
 
 scope = "playlist-modify-public ugc-image-upload"
 
@@ -29,6 +30,7 @@ def index():
     '''
     redirect user to auth url
     '''
+    response = make_response("Cookies cleared")
     for cookie_name in request.cookies:
         response.set_cookie(cookie_name, expires=0)
     session.clear()
