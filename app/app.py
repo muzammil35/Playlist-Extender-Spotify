@@ -69,6 +69,7 @@ def callback():
         "Authorization": f"Bearer {access_token}"
     }
     user_response = requests.get(user_url, headers=headers)
+    print("user response", user_response)
     user_data = user_response.json()
 
     user_id = user_data['id'] 
