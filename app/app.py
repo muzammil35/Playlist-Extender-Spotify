@@ -66,7 +66,8 @@ def create_playlist():
 
     scope = "playlist-modify-public ugc-image-upload"
     #sp = spotipy.Spotify(auth=access_token)
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+    #sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+    sp = spotipy.Spotify(auth=token_info['access_token'])
 
     token_info = session.get('token_info')
 
