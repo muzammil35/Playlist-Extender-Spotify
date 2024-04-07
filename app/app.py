@@ -76,7 +76,8 @@ def callback():
     }
     playlists_response = requests.get(playlists_url, headers=headers)
     playlists_data = playlists_response.json()
-    playlists = playlists_data['items']
+    if(playlists_data['items']):
+      playlists = playlists_data['items']
 
     # Render home.html template with user's playlists
     return render_template('home.html', playlists=playlists)
