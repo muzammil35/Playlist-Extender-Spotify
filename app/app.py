@@ -50,12 +50,13 @@ def callback():
     token_url = 'https://accounts.spotify.com/api/token'
     payload = {
       'grant_type': 'authorization_code',
-      'code': code,
+      'code': str(code),
       'redirect_uri': redirect_uri,
       'client_id': client_id,
       'client_secret': client_secret
     }
     response = requests.post(token_url, data=payload)
+    print("response: ", response)
     token_info = response.json()
 
     # Extract the access token
@@ -75,6 +76,7 @@ def callback():
         "Authorization": f"Bearer {access_token}"
     }
     playlists_response = requests.get(playlists_url, headers=headers)
+    print("response: ", playlists_response)
     playlists_data = playlists_response.json()
     if(playlists_data['items']):
       playlists = playlists_data['items']
