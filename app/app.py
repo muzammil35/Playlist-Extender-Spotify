@@ -43,17 +43,6 @@ def callback():
     '''
     send playlists to frontend
     '''
-
-    scope = "playlist-modify-public ugc-image-upload"
-    client_id = os.environ['CLIENT_ID']
-    client_secret = os.environ['CLIENT_SECRET']
-    redirect_uri = os.environ['REDIRECT_URI']
-    
-    sp_oauth = SpotifyOAuth(client_id,
-                        client_secret,
-                        redirect_uri,
-                        scope=scope)
-    
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
 
